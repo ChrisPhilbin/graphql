@@ -23,6 +23,30 @@ const users = [
   },
 ];
 
+const posts = [
+  {
+    id: "123",
+    title: "First post title",
+    body: "Body of the first post",
+    published: true,
+    author: "abc123",
+  },
+  {
+    id: "456",
+    title: "Second post title",
+    body: "Body of the second post",
+    published: true,
+    author: "abc123",
+  },
+  {
+    id: "789",
+    title: "Third post title",
+    body: "Body of the last post",
+    published: false,
+    author: "abc789",
+  },
+];
+
 //types/application schema
 
 const typeDefs = `
@@ -44,6 +68,7 @@ const typeDefs = `
       title: String!
       body: String!
       published: Boolean!
+      author: User!
     }
 `;
 
@@ -75,6 +100,13 @@ const resolvers = {
         body: "This is the body of the first post",
         published: true,
       };
+    },
+  },
+  Post: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => {
+        return user.id === parent.author;
+      });
     },
   },
 };
