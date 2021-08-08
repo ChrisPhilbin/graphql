@@ -52,7 +52,9 @@ const posts = [
 const typeDefs = `
     type Query {
       users(query: String): [User!]!
+      posts(query: String): [Post!]!
       me: User!
+      user: User!
       post: Post!
     }
 
@@ -61,6 +63,7 @@ const typeDefs = `
       name: String!
       email: String!
       age: Int
+      posts: [Post!]!
     }
 
     type Post {
@@ -85,6 +88,21 @@ const resolvers = {
         });
       }
     },
+    posts(parent, args, ctx, info) {
+      if (!args.query) {
+        return posts;
+      }
+
+      return posts.filter((post) => {
+        const isTitleMatch = post.title
+          .toLowerCase()
+          .includes(args.query.toLowerCase());
+        const isBodyMatch = post.body
+          .toLowerCase()
+          .includes(args.query.toLowerCase());
+        return isTitleMatch || isBodyMatch;
+      });
+    },
     me() {
       return {
         id: "123098",
@@ -106,6 +124,13 @@ const resolvers = {
     author(parent, args, ctx, info) {
       return users.find((user) => {
         return user.id === parent.author;
+      });
+    },
+  },
+  User: {
+    posts(parent, args, ctx, info) {
+      return posts.filter((post) => {
+        return post.author === parent.id;
       });
     },
   },
