@@ -47,6 +47,25 @@ const posts = [
   },
 ];
 
+const comments = [
+  {
+    id: "1",
+    text: "This is the first comment",
+  },
+  {
+    id: "2",
+    text: "Today is Sunday!",
+  },
+  {
+    id: "3",
+    text: "The weather is nice outside today",
+  },
+  {
+    id: "4",
+    text: "The crow flies west at sundown",
+  },
+];
+
 //types/application schema
 
 const typeDefs = `
@@ -56,6 +75,7 @@ const typeDefs = `
       me: User!
       user: User!
       post: Post!
+      comments: [Comment!]!
     }
 
     type User {
@@ -73,6 +93,11 @@ const typeDefs = `
       published: Boolean!
       author: User!
     }
+
+    type Comment {
+      id: ID!
+      text: String!
+    }
 `;
 
 //resolvers
@@ -87,6 +112,9 @@ const resolvers = {
           return user.name.toLowerCase().includes(args.query.toLowerCase());
         });
       }
+    },
+    comments(parent, args, cts, info) {
+      return comments;
     },
     posts(parent, args, ctx, info) {
       if (!args.query) {
