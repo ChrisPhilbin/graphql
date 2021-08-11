@@ -93,6 +93,7 @@ const typeDefs = `
       createPost(data: CreatePostInput!): Post!
       deletePost(id: ID!): Post!
       createComment(data: CreateCommentInput!): Comment!
+      deleteComment(id: ID!): Comment!
     }
 
     input CreateUserInput {
@@ -291,6 +292,19 @@ const resolvers = {
 
       return comment;
     },
+  },
+  deleteComment(parent, args, ctx, info) {
+    const commentIndex = comments.findIndex((comment) => {
+      return comment.id === args.id;
+    });
+
+    if (validComment === -1) {
+      throw new Error("Comment ID doesn't exist.");
+    }
+
+    const deletedComment = comments.slice(commentIndex, 1);
+
+    return deletedComment[0];
   },
   Post: {
     author(parent, args, ctx, info) {
