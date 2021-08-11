@@ -160,6 +160,23 @@ const Mutation = {
 
     return comment;
   },
+  updateComment(parent, args, { db }, info) {
+    const { id, data } = args;
+
+    const comment = db.comments.find((comment) => {
+      return comment.id === id;
+    });
+
+    if (!comment) {
+      throw new Error("Comment ID does not exist");
+    }
+
+    if (typeof data.text === "string") {
+      comment.text = data.text;
+    }
+
+    return comment;
+  },
   deleteComment(parent, args, { db }, info) {
     const commentIndex = db.comments.findIndex((comment) => {
       return comment.id === args.id;

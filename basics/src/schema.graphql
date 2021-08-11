@@ -50,6 +50,10 @@ input CreateCommentInput {
   post: ID!
 }
 
+input UpdateCommentInput {
+  text: String
+}
+
 type User {
   id: ID!
   name: String!
