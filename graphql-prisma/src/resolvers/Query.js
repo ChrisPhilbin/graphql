@@ -5,6 +5,7 @@ const Query = {
     const opArgs = {
       first: args.first,
       skip: args.skip,
+      after: args.after,
     };
 
     if (args.query) {
@@ -20,12 +21,21 @@ const Query = {
     return prisma.query.users(opArgs, info);
   },
   comments(parent, args, { prisma }, info) {
-    return prisma.query.comments(null, info);
+    const opArgs = {
+      first: args.first,
+      after: args.after,
+      skip: args.skip,
+    };
+
+    return prisma.query.comments(opArgs, info);
   },
   async myPosts(parent, args, { prisma, request }, info) {
     const userId = getUserId(request);
 
     const opArgs = {
+      first: args.first,
+      after: args.after,
+      skip: args.skip,
       where: {
         author: {
           id: userId,
@@ -49,6 +59,7 @@ const Query = {
     const opArgs = {
       first: args.first,
       skip: args.skip,
+      after: args.after,
       where: {
         published: true,
       },
