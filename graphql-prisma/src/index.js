@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import { GraphQLServer, PubSub } from "graphql-yoga";
 import db from "./db";
 import prisma from "./prisma";
@@ -19,4 +20,6 @@ const server = new GraphQLServer({
   fragmentReplacements,
 });
 
-server.start(() => console.log("Server is running!"));
+server.start({ port: process.env.PORT || 4000 }, () =>
+  console.log("Server is running!")
+);
